@@ -1,4 +1,4 @@
-import UserModel from './model.js'; // Assuming your models are in a folder called 'models'
+import UserModel from './model.js';
 
 const createUser = async (userInfo) => {
   try {

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collectionSchema = new Schema({
+const collectionsSchema = new Schema({
     collectionName: {
       type: String,
       required: true
@@ -21,7 +21,7 @@ const collectionSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'User'
     }],
-    views: [{
+    savedBy: [{
       type: Schema.Types.ObjectId,
       ref: 'User'
     }]
