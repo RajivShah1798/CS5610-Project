@@ -5,25 +5,25 @@ Server side code for the CS5610 Project
 
 ### User Functionalities
 
-    - **Creating a New User:** Sign Up
-    - **Finding User by Credentials:** Login
-    - **Delete User:** Delete Account
-    - **Find All Users:** Searching for Creators (Sharing of Collections)
-    - **AddCollaboration:** A user shared their Collection with you
-    - **RemoveCollaboration:** A user revoked share access to their Collection with you
-    - **ShowCollaboration:** Get List of All Collections shared with you 
-    - **AddCreation:** A user created a new Collection
-    - **RemoveCreation:** A user deleted their Collection
-    - **ShowCreation:** Get List of All Collections created by you 
-    - **AddSaved:** A user saved/ bookmarked a collection (here user has only read access to the collection)
-    - **RemoveSaved:** A user deleted a bookmarked Collection
-    - **ShowSaved:** Get List of All Collections saved by you
-    - **IncreaseFollowerCount:** New user starts following you
-    - **DecreaseFollowerCount:** New user stops following you
-    - **IncreaseFollowingCount:** You start Following a User.
-    - **DecreaseFollowingCount:** You stop Following a User.
-    - **ShowFollowingCount:** No of users you follow
-    - **ShowFollowerCount:** No of users that follow you
+- **Creating a New User:** Sign Up
+- **Finding User by Credentials:** Login
+- **Delete User:** Delete Account
+- **Find All Users:** Searching for Creators (Sharing of Collections)
+- **AddCollaboration:** A user shared their Collection with you
+- **RemoveCollaboration:** A user revoked share access to their Collection with you
+- **ShowCollaboration:** Get List of All Collections shared with you 
+- **AddCreation:** A user created a new Collection
+- **RemoveCreation:** A user deleted their Collection
+- **ShowCreation:** Get List of All Collections created by you 
+- **AddSaved:** A user saved/ bookmarked a collection (here user has only read access to the collection)
+- **RemoveSaved:** A user deleted a bookmarked Collection
+- **ShowSaved:** Get List of All Collections saved by you
+- **IncreaseFollowerCount:** New user starts following you
+- **DecreaseFollowerCount:** New user stops following you
+- **IncreaseFollowingCount:** You start Following a User.
+- **DecreaseFollowingCount:** You stop Following a User.
+- **ShowFollowingCount:** No of users you follow
+- **ShowFollowerCount:** No of users that follow you
 
 ### User Routes Documentation
 
