@@ -225,6 +225,131 @@ Server side code for the CS5610 Project
   - `200 OK`: Returns the count of users following the specified user.
   - `500 Internal Server Error`: Indicates an error occurred during the retrieval process.
 
+## Collection Functionalities and API Documentation
+
+### Collection Functionalities
+
+- **Create a New Collection:** Create A New Collection
+- **Update Collection Type:** Change Privacy Settings for an existing Collection (Available only for Creators)
+- **Add Github Repo:** Add a New Github Repo to a Collection
+- **Remove Repo:** Remove a Github Repo from a Collection
+- **Add Collaborator:** Share your Collection with Others to Collaborate (Available only for Creators)
+- **Remove Collaborator:** Remove collaborator's Access to Collection
+- **Add to savedBy:** Add user to this list to track number of users bookmarking a collection
+- **Remove from savedBy:** Remove user from this list to track number of users bookmarking a collection
+- **Get All Collections:** Get All Available Collections
+- **Get CollectionsByType:** Get Collections by Type (Public/ Private)
+
+#### 1. Create a New Collection
+
+- **URL:** `POST /repoc/api/collections`
+- **Description:** Creates a new collection with the provided collection information.
+- **Request Body:**
+  - `collectionInfo`: Object containing collection information such as collectionName, collectionTags, collectionType, githubRepos, owner, collaborators, savedBy, etc.
+- **Response:**
+  - `201 Created`: Returns the newly created collection object.
+  - `500 Internal Server Error`: Indicates an error occurred during collection creation.
+
+#### 2. Update Collection Type
+
+- **URL:** `PUT /repoc/api/collections/:collectionId/type`
+- **Description:** Updates the type of a collection (Private or Public).
+- **Parameters:**
+  - `collectionId`: The ID of the collection to update.
+- **Request Body:**
+  - `newType`: The new type of the collection.
+- **Response:**
+  - `200 OK`: Returns the updated collection object.
+  - `500 Internal Server Error`: Indicates an error occurred during the update process.
+
+#### 3. Add Github Repo
+
+- **URL:** `POST /repoc/api/collections/:collectionId/github-repos`
+- **Description:** Adds a Github repository to a collection.
+- **Parameters:**
+  - `collectionId`: The ID of the collection to add the repository to.
+- **Request Body:**
+  - `repoId`: The ID of the Github repository to add.
+- **Response:**
+  - `200 OK`: Returns the updated collection object.
+  - `500 Internal Server Error`: Indicates an error occurred during the addition process.
+
+#### 4. Remove Repo
+
+- **URL:** `DELETE /repoc/api/collections/:collectionId/github-repos/:repoId`
+- **Description:** Removes a Github repository from a collection.
+- **Parameters:**
+  - `collectionId`: The ID of the collection to remove the repository from.
+  - `repoId`: The ID of the Github repository to remove.
+- **Response:**
+  - `200 OK`: Returns the updated collection object.
+  - `500 Internal Server Error`: Indicates an error occurred during the removal process.
+
+#### 5. Add Collaborator
+
+- **URL:** `POST /repoc/api/collections/:collectionId/collaborators`
+- **Description:** Adds a collaborator to a collection.
+- **Parameters:**
+  - `collectionId`: The ID of the collection.
+- **Request Body:**
+  - `userId`: The ID of the user to add as a collaborator.
+- **Response:**
+  - `200 OK`: Returns the updated collection object.
+  - `500 Internal Server Error`: Indicates an error occurred during the addition process.
+
+#### 6. Remove Collaborator
+
+- **URL:** `DELETE /repoc/api/collections/:collectionId/collaborators/:userId`
+- **Description:** Removes a collaborator from a collection.
+- **Parameters:**
+  - `collectionId`: The ID of the collection.
+  - `userId`: The ID of the user to remove as a collaborator.
+- **Response:**
+  - `200 OK`: Returns the updated collection object.
+  - `500 Internal Server Error`: Indicates an error occurred during the removal process.
+
+#### 7. Add to savedBy
+
+- **URL:** `POST /repoc/api/collections/:collectionId/savedBy`
+- **Description:** Adds a user to the savedBy list of a collection.
+- **Parameters:**
+  - `collectionId`: The ID of the collection.
+- **Request Body:**
+  - `userId`: The ID of the user to add to savedBy.
+- **Response:**
+  - `200 OK`: Returns the updated collection object.
+  - `500 Internal Server Error`: Indicates an error occurred during the addition process.
+
+#### 8. Remove from savedBy
+
+- **URL:** `DELETE /repoc/api/collections/:collectionId/savedBy/:userId`
+- **Description:** Removes a user from the savedBy list of a collection.
+- **Parameters:**
+  - `collectionId`: The ID of the collection.
+  - `userId`: The ID of the user to remove from savedBy.
+- **Response:**
+  - `200 OK`: Returns the updated collection object.
+  - `500 Internal Server Error`: Indicates an error occurred during the removal process.
+
+#### 9. Get All Collections
+
+- **URL:** `GET /repoc/api/collections`
+- **Description:** Retrieves a list of all collections.
+- **Response:**
+  - `200 OK`: Returns an array containing all collection objects.
+  - `500 Internal Server Error`: Indicates an error occurred during the retrieval process.
+
+#### 10. Get Collections By Type
+
+- **URL:** `GET /repoc/api/collections/:type`
+- **Description:** Retrieves collections of a specific type (Private or Public).
+- **Parameters:**
+  - `type`: The type of collections to retrieve.
+- **Response:**
+  - `200 OK`: Returns an array containing all collections of the specified type.
+  - `500 Internal Server Error`: Indicates an error occurred during the retrieval process.
+
+
 ---
 
-This document provides detailed information about each route, including their purpose, parameters, expected request/response formats, and potential error responses. It can be shared with the front-end team to help them understand how to interact with the backend API.
+This document provides detailed information about each route, including their purpose, parameters, expected request/response formats, and potential error responses.
