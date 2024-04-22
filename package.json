@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/RajivShah1798/CS5610-Project#readme",
   "dependencies": {
+    "axios": "^1.6.8",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
