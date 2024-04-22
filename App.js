@@ -2,8 +2,9 @@ import cors from "cors";
 import express from 'express';
 import mongoose from "mongoose";
 import UserRoutes from "./Users/routes.js";
+import "dotenv/config"
 
-mongoose.connect("mongodb+srv://admin:N0JhMFSnYzgNgvBW@cs5610-project.ybqvy1b.mongodb.net/cs5610");
+mongoose.connect(process.env.DB_CONNECTION_STRING);
 const app = express();
 app.use(cors());
 app.use(express.json());
