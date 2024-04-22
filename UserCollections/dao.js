@@ -12,7 +12,7 @@
         10.) Get CollectionsByType
 */
 
-import { CollectionModel } from './models'; // Assuming your models are in a folder called 'models'
+import CollectionModel from './model.js'; // Assuming your models are in a folder called 'models'
 
 const createCollection = async (collectionInfo) => {
   try {

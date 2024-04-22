@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collectionsSchema = new Schema({
+const collectionsSchema = new mongoose.Schema({
     collectionName: {
       type: String,
       required: true
@@ -13,16 +13,16 @@ const collectionsSchema = new Schema({
     },
     githubRepos: [String], // Array of strings for Github repo IDs
     owner: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
     collaborators: [{
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     }],
     savedBy: [{
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     }]
   },
