@@ -15,10 +15,14 @@ import {
   
   export default function CollectionRoutes(app) {
 
-  function searchRepositories(tags, accessToken, callback) {
+  function searchRepositories(tags, callback) {
     const options = {
-        url: `https://api.github.com/search/repositories?q=${tags}&sort=stars`,
-        method: 'GET'
+        url: `https://api.github.com/search/repositories?q=${tags}&sort=stars&per_page=15&page=1`,
+        method: 'GET',
+        headers: {
+          "Authorization": "Bearer" + process.env.GIT_ACCESS_TOKEN,
+          "User-Agent": "RajivShah1798"
+        }
     };
 
     request(options, (error, response, body) => {
@@ -36,24 +40,15 @@ import {
   app.post('/repoc/api/search', async (req, res) => {
     try {
       console.log("In API Search");
-      const tags = req.body;
-      console.log(tags);
-      console.log(process.env.GIT_CLIENT_ID);
-      console.log(process.env.GIT_CLIENT_SECRET);
-      getAccessToken(process.env.GIT_CLIENT_ID, process.env.GIT_CLIENT_SECRET, (err, accessToken) => {
+      const search = req.body;
+      console.log(search.query);
+      searchRepositories(search.query, (err, repositories) => {
         if (err) {
-            console.error('Failed to get access token:', err);
+            console.error('Failed to search repositories:', err);
         } else {
-            console.log('Access token:', accessToken);
-            searchRepositories(tags, accessToken, (err, repositories) => {
-                if (err) {
-                    console.error('Failed to search repositories:', err);
-                } else {
-                    console.log('Found repositories:');
-                    repositories.forEach(repo => {
-                        console.log(`${repo.full_name}: ${repo.description}`);
-                    });
-                }
+            console.log('Found repositories:');
+            repositories.forEach(repo => {
+                console.log(`${repo.full_name}: ${repo.description}`);
             });
         }
     });
