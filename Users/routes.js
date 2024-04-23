@@ -22,7 +22,7 @@ import {
 
 export default function UserRoutes(app) {
   // POST /repoc/api/users - Create a new user
-  app.post("/repoc/api/users", async (req, res) => {
+  app.post("/repoc/api/users/signup", async (req, res) => {
     try {
       const newUser = await createUser(req.body);
       res.status(201).json(newUser);
