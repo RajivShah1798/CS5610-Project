@@ -1,3 +1,4 @@
+import request from 'request';
 import {
     createCollection,
     updateCollectionType,
@@ -7,16 +8,63 @@ import {
     removeCollaborator,
     addToSavedBy,
     removeFromSavedBy,
+    getCollectionsByUser,
     getAllCollections,
     getCollectionsByType
   } from './dao.js';
+  import 'dotenv/config';
   
   export default function CollectionRoutes(app) {
-  
+
+  function searchRepositories(tags, callback) {
+    const options = {
+        url: `https://api.github.com/search/repositories?q=${tags}&sort=stars&per_page=15&page=1`,
+        method: 'GET',
+        headers: {
+          "Authorization": "Bearer" + process.env.GIT_ACCESS_TOKEN,
+          "User-Agent": "RajivShah1798"
+        }
+    };
+
+    request(options, (error, response, body) => {
+        if (error) {
+            console.error('Error searching repositories:', error);
+            callback(error);
+        } else {
+          console.log(body);
+            const data = JSON.parse(body);
+            callback(null, data.items);
+        }
+    });
+  }
+
+  app.post('/repoc/api/search', async (req, res) => {
+    try {
+      console.log("In API Search");
+      const search = req.body;
+      console.log(search.query);
+      searchRepositories(search.query, (err, repositories) => {
+        if (err) {
+            console.error('Failed to search repositories:', err);
+        } else {
+            console.log('Found repositories:');
+            repositories.forEach(repo => {
+                console.log(`${repo.full_name}: ${repo.description}`);
+            });
+        }
+    });
+    } catch(error) {
+      res.status(500).json({error: error.message});
+  }
+});
+    
+    
     // POST /repoc/api/collections - Create a new collection
-    app.post('/repoc/api/collections', async (req, res) => {
+
+    app.post('/repoc/api/collections/:userId', async (req, res) => {
+      const userId = req.params.userId;
       try {
-        const newCollection = await createCollection(req.body);
+        const newCollection = await createCollection(userId, req.body);
         res.status(201).json(newCollection);
       } catch (error) {
         res.status(500).json({ error: error.message });
@@ -109,6 +157,17 @@ import {
         res.status(500).json({ error: error.message });
       }
     });
+
+    // POST /repoc/api/collections - Get all collections for a User
+    app.post('/repoc/api/collections', async (req, res) => {
+      try {
+        const userId = req.body.userId;
+        const collections = await getCollectionsByUser(userId);
+        res.status(200).json(collections);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
   
     // GET /repoc/api/collections/:type - Get collections by type
     app.get('/repoc/api/collections/:type', async (req, res) => {
@@ -122,4 +181,5 @@ import {
     });
   
   };
+  
   

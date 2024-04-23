@@ -14,8 +14,7 @@ const collectionsSchema = new mongoose.Schema({
     githubRepos: [String], // Array of strings for Github repo IDs
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      ref: 'User'
     },
     collaborators: [{
       type: mongoose.Schema.Types.ObjectId,

@@ -13,10 +13,31 @@
 */
 
 import CollectionModel from './model.js'; // Assuming your models are in a folder called 'models'
+import UserModel from '../Users/model.js';
+import { addCreation } from '../Users/dao.js';
 
-const createCollection = async (collectionInfo) => {
+// const createCollection = async (collectionInfo) => {
+//   try {
+//     const collection = await CollectionModel.create(collectionInfo);
+//     return collection;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+const createCollection = async (userId, collectionInfo) => {
   try {
+    const user = await UserModel.findById(userId);
+    console.log(user);
+    if (user.userType !== 'creator' && collectionInfo.collectionType === 'Public') {
+      throw new Error("User not authorized to create public collections.");
+    }
     const collection = await CollectionModel.create(collectionInfo);
+    // Add the user as the owner of the collection
+    collection.owner = userId;
+    await collection.save();
+    // Add the collection to the user's collectionsOwned
+    await addCreation(userId, collection._id);
     return collection;
   } catch (error) {
     throw error;
@@ -104,6 +125,30 @@ const getCollectionsByType = async (collectionType) => {
   }
 };
 
+const getCollectionsByUser = async (userId) => {
+  try {
+    // Find collections owned by the user
+    const collectionsOwned = await CollectionModel.find({ owner: userId });
+
+    // Find collections collaborated by the user
+    const collectionsCollaborated = await CollectionModel.find({ collaborators: userId });
+
+    // Find collections saved by the user
+    const collectionsSavedBy = await CollectionModel.find({ savedBy: userId });
+
+    // Construct JSON object containing all collections
+    const collections = {
+      collectionsOwned,
+      collectionsCollaborated,
+      collectionsSavedBy
+    };
+    
+    return collections;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   createCollection,
   updateCollectionType,
@@ -114,5 +159,6 @@ export {
   addToSavedBy,
   removeFromSavedBy,
   getAllCollections,
-  getCollectionsByType
+  getCollectionsByType,
+  getCollectionsByUser
 };
