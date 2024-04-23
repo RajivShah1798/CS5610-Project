@@ -125,6 +125,30 @@ const getCollectionsByType = async (collectionType) => {
   }
 };
 
+const getCollectionsByUser = async (userId) => {
+  try {
+    // Find collections owned by the user
+    const collectionsOwned = await CollectionModel.find({ owner: userId });
+
+    // Find collections collaborated by the user
+    const collectionsCollaborated = await CollectionModel.find({ collaborators: userId });
+
+    // Find collections saved by the user
+    const collectionsSavedBy = await CollectionModel.find({ savedBy: userId });
+
+    // Construct JSON object containing all collections
+    const collections = {
+      collectionsOwned,
+      collectionsCollaborated,
+      collectionsSavedBy
+    };
+    
+    return collections;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   createCollection,
   updateCollectionType,
@@ -135,5 +159,6 @@ export {
   addToSavedBy,
   removeFromSavedBy,
   getAllCollections,
-  getCollectionsByType
+  getCollectionsByType,
+  getCollectionsByUser
 };

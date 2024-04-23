@@ -8,6 +8,7 @@ import {
     removeCollaborator,
     addToSavedBy,
     removeFromSavedBy,
+    getCollectionsByUser,
     getAllCollections,
     getCollectionsByType
   } from './dao.js';
@@ -151,6 +152,17 @@ import {
     app.get('/repoc/api/collections', async (req, res) => {
       try {
         const collections = await getAllCollections();
+        res.status(200).json(collections);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // POST /repoc/api/collections - Get all collections for a User
+    app.post('/repoc/api/collections', async (req, res) => {
+      try {
+        const userId = req.body.userId;
+        const collections = await getCollectionsByUser(userId);
         res.status(200).json(collections);
       } catch (error) {
         res.status(500).json({ error: error.message });
