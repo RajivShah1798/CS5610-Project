@@ -1,3 +1,4 @@
+import request from 'request';
 import {
     createCollection,
     updateCollectionType,
@@ -10,13 +11,64 @@ import {
     getAllCollections,
     getCollectionsByType
   } from './dao.js';
+  import 'dotenv/config';
   
   export default function CollectionRoutes(app) {
-  
+
+  function searchRepositories(tags, accessToken, callback) {
+    const options = {
+        url: `https://api.github.com/search/repositories?q=${tags}&sort=stars`,
+        method: 'GET'
+    };
+
+    request(options, (error, response, body) => {
+        if (error) {
+            console.error('Error searching repositories:', error);
+            callback(error);
+        } else {
+          console.log(body);
+            const data = JSON.parse(body);
+            callback(null, data.items);
+        }
+    });
+  }
+
+  app.post('/repoc/api/search', async (req, res) => {
+    try {
+      console.log("In API Search");
+      const tags = req.body;
+      console.log(tags);
+      console.log(process.env.GIT_CLIENT_ID);
+      console.log(process.env.GIT_CLIENT_SECRET);
+      getAccessToken(process.env.GIT_CLIENT_ID, process.env.GIT_CLIENT_SECRET, (err, accessToken) => {
+        if (err) {
+            console.error('Failed to get access token:', err);
+        } else {
+            console.log('Access token:', accessToken);
+            searchRepositories(tags, accessToken, (err, repositories) => {
+                if (err) {
+                    console.error('Failed to search repositories:', err);
+                } else {
+                    console.log('Found repositories:');
+                    repositories.forEach(repo => {
+                        console.log(`${repo.full_name}: ${repo.description}`);
+                    });
+                }
+            });
+        }
+    });
+    } catch(error) {
+      res.status(500).json({error: error.message});
+  }
+});
+    
+    
     // POST /repoc/api/collections - Create a new collection
-    app.post('/repoc/api/collections', async (req, res) => {
+
+    app.post('/repoc/api/collections/:userId', async (req, res) => {
+      const userId = req.params.userId;
       try {
-        const newCollection = await createCollection(req.body);
+        const newCollection = await createCollection(userId, req.body);
         res.status(201).json(newCollection);
       } catch (error) {
         res.status(500).json({ error: error.message });
@@ -122,4 +174,5 @@ import {
     });
   
   };
+  
   
