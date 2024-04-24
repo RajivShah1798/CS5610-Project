@@ -32,8 +32,13 @@ const createCollection = async (userId, collectionInfo) => {
     if (user.userType !== 'creator' && collectionInfo.collectionType === 'Public') {
       throw new Error("User not authorized to create public collections.");
     }
+
+    console.log(collectionInfo);
     const collection = await CollectionModel.create(collectionInfo);
     // Add the user as the owner of the collection
+    console.log(collection);
+
+    console.log(typeof(user._id));
     collection.owner = user._id;
     collection.ownerName = user.username;
     await collection.save();
