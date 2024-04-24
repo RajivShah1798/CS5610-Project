@@ -36,8 +36,7 @@ const userSchema = new mongoose.Schema(
     userType: {
       type: String,
       enum: ["admin", "user", "creator"], // Assuming user types are limited to 'admin' and 'user'
-      required: true,
-      default: "user",
+      required: true
     },
     collectionsOwned: [
       {
