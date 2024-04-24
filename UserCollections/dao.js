@@ -131,6 +131,15 @@ const getCollectionsByType = async (collectionType) => {
   }
 };
 
+const getCollectionById = async (collectionId) => {
+  try {
+    const collection = await CollectionModel.findById(collectionId);
+    return collection;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getCollectionsByUser = async (userId) => {
   try {
     // Find collections owned by the user
@@ -166,5 +175,6 @@ export {
   removeFromSavedBy,
   getAllCollections,
   getCollectionsByType,
+  getCollectionById,
   getCollectionsByUser
 };

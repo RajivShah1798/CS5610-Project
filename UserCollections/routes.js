@@ -10,6 +10,7 @@ import {
     removeFromSavedBy,
     getCollectionsByUser,
     getAllCollections,
+    getCollectionById,
     getCollectionsByType
   } from './dao.js';
   import 'dotenv/config';
@@ -152,6 +153,17 @@ import {
     app.get('/repoc/api/collections', async (req, res) => {
       try {
         const collections = await getAllCollections();
+        res.status(200).json(collections);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // GET /repoc/api/collections/:collectionId - Get collection by Id
+    app.get('/repoc/api/collections/:collectionId', async (req, res) => {
+      try {
+        const { collectionId } = req.params;
+        const collections = await getCollectionById(collectionId);
         res.status(200).json(collections);
       } catch (error) {
         res.status(500).json({ error: error.message });
