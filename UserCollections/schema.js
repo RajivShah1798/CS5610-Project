@@ -16,6 +16,9 @@ const collectionsSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     },
+    ownerName: {
+      type: String
+    },
     collaborators: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'

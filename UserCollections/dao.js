@@ -34,7 +34,8 @@ const createCollection = async (userId, collectionInfo) => {
     }
     const collection = await CollectionModel.create(collectionInfo);
     // Add the user as the owner of the collection
-    collection.owner = userId;
+    collection.owner = user._id;
+    collection.ownerName = user.username;
     await collection.save();
     // Add the collection to the user's collectionsOwned
     await addCreation(userId, collection._id);
