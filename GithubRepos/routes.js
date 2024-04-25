@@ -40,6 +40,7 @@ export default function gitRoutes(app) {
   app.get("/repoc/api/gitRepo/:gitId", async (req, res) => {
     try {
       const { gitId } = req.params;
+      console.log(gitId);
       const repo = await findRepoById(gitId);
       res.status(201).json(repo);
     } catch (error) {

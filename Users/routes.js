@@ -1,6 +1,7 @@
 import {
   createUser,
   findUserByName,
+  findUserById,
   findUserByCredentials,
   deleteUser,
   findAllUsers,
@@ -266,6 +267,17 @@ export default function UserRoutes(app) {
     try {
       const followerCount = await showFollowerCount(userId);
       res.status(200).json(followerCount);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // GET /repoc/api/users/:userId - Get User Details using Id
+  app.get("/repoc/api/users/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    try {
+      const user = await findUserById(userId);
+      res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

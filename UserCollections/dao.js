@@ -64,7 +64,7 @@ const updateCollectionType = async (collectionId, newType) => {
 const addGithubRepo = async (collectionId, repo) => {
   try {
     const newRepo = await createRepo(repo);
-    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { githubRepos: repo._id } }, { new: true });
+    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { githubRepos: newRepo._id } }, { new: true });
     return collection;
   } catch (error) {
     throw error;

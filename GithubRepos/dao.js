@@ -20,7 +20,7 @@ const deleteRepo = async (gitRepoId) => {
 
 const findRepoById = async (gitRepoId) => {
 try {
-    const result = await GitRepoModel.findOne({ gitId: gitRepoId });
+    const result = await GitRepoModel.findById(gitRepoId);
     return result;
     } catch (error) {
     throw error;
