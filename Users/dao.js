@@ -9,6 +9,15 @@ const createUser = async (userInfo) => {
   }
 };
 
+const findUserByName = async (username) => {
+  try {
+    const user = await UserModel.findOne({ username });
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const findUserByCredentials = async (username, password) => {
   try {
     const user = await UserModel.findOne({ username, password });
@@ -175,6 +184,7 @@ export {
   createUser,
   findUserByCredentials,
   deleteUser,
+  findUserByName,
   findAllUsers,
   addCollaboration,
   removeCollaboration,

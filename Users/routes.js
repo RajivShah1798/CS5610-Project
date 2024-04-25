@@ -1,5 +1,6 @@
 import {
   createUser,
+  findUserByName,
   findUserByCredentials,
   deleteUser,
   findAllUsers,
@@ -24,7 +25,13 @@ export default function UserRoutes(app) {
   // POST /repoc/api/users - Create a new user
   app.post("/repoc/api/users/signup", async (req, res) => {
     try {
+      const user = await findUserByName(req.body.username);
+      if (user) {
+        res.status(400).json(
+          { message: "Username already taken" });
+      }
       const newUser = await createUser(req.body);
+      req.session["currentUser"] = newUser;
       res.status(201).json(newUser);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -37,6 +44,7 @@ export default function UserRoutes(app) {
     try {
       const user = await findUserByCredentials(username, password);
       if (user) {
+        req.session["currentUser"] = user;
         res.status(200).json(user);
       } else {
         res.status(404).json({ message: "User not found" });
@@ -45,6 +53,16 @@ export default function UserRoutes(app) {
       res.status(500).json({ error: error.message });
     }
   });
+
+  // POST /repoc/api/users/logout - Log user out
+  app.post("/repoc/api/users/logout", async(req, res) => {
+    try {
+      req.session.destroy();
+      res.sendStatus(200);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  })
 
   // DELETE /repoc/api/users/:userId - Delete user by ID
   app.delete("/repoc/api/users/:userId", async (req, res) => {
@@ -66,6 +84,8 @@ export default function UserRoutes(app) {
       res.status(500).json({ error: error.message });
     }
   });
+
+
 
   // PUT /repoc/api/users/:userId/collaborate/:collectionId - Add collaboration
   app.put(
