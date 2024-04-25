@@ -1,10 +1,9 @@
 import { createRepo, deleteRepo, findAllRepos, findRepoById } from "./dao.js";
-import "dotenv/config";
 
 export default function gitRoutes(app) {
   // POST /repoc/api/gitRepo - Create a new Repo Object
 
-  app.post("/repoc/api/gitRepo/", async (req, res) => {
+  app.post("/repoc/api/gitRepo", async (req, res) => {
     try {
       const newRepo = await createRepo(req.body);
       res.status(201).json(newRepo);
@@ -15,7 +14,7 @@ export default function gitRoutes(app) {
 
   // DELETE /repoc/api/gitRepo - Delete a Repo Object
 
-  app.post("/repoc/api/gitRepo/:gitId", async (req, res) => {
+  app.delete("/repoc/api/gitRepo/:gitId", async (req, res) => {
     try {
       const { gitId } = req.params;
       const updatedRepos = await deleteRepo(gitId);
@@ -27,7 +26,7 @@ export default function gitRoutes(app) {
 
   // Get /repoc/api/gitRepo - Get all available Repo Objects
 
-  app.get("/repoc/api/gitRepo/:gitId", async (req, res) => {
+  app.get("/repoc/api/gitRepo", async (req, res) => {
     try {
       const repos = await findAllRepos();
       res.status(201).json(repos);
@@ -47,4 +46,4 @@ export default function gitRoutes(app) {
       res.status(500).json({ error: error.message });
     }
   });
-}
+};

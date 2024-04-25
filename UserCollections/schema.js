@@ -11,7 +11,10 @@ const collectionsSchema = new mongoose.Schema({
       enum: ['Private', 'Public'],
       required: true
     },
-    githubRepos: [String], // Array of strings for Github repo IDs
+    githubRepos: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'GitRepo'
+    }], // Array of strings for Github repo IDs
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'

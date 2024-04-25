@@ -1,4 +1,4 @@
 import mongoose from "mongoose";
 import schema from "./schema.js";
-const gitRepoModel = mongoose.model("GitRepoModel", schema);
-export default gitRepoModel;
+const GitRepoModel = mongoose.model("GitRepoModel", schema);
+export default GitRepoModel;

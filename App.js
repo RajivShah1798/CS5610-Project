@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import UserRoutes from "./Users/routes.js";
 import CollectionRoutes from "./UserCollections/routes.js";
 import "dotenv/config"
+import gitRoutes from "./GithubRepos/routes.js";
 
 mongoose.connect(process.env.DB_CONNECTION_STRING);
 const app = express();
@@ -47,4 +48,5 @@ app.use(express.json());
 console.log("Hello World");
 UserRoutes(app);
 CollectionRoutes(app);
+gitRoutes(app);
 app.listen(4000);

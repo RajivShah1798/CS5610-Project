@@ -1,8 +1,8 @@
-import gitRepoModel from "./model.js";
+import GitRepoModel from "./model.js";
 
 const createRepo = async (gitRepo) => {
   try {
-    const repo = await gitRepoModel.create(gitRepo);
+    const repo = await GitRepoModel.create(gitRepo);
     return repo;
   } catch (error) {
     throw error;
@@ -11,7 +11,7 @@ const createRepo = async (gitRepo) => {
 
 const deleteRepo = async (gitRepoId) => {
   try {
-    const result = await gitRepoModel.deleteOne({ id: gitRepoId });
+    const result = await GitRepoModel.deleteOne({ id: gitRepoId });
     return result;
   } catch (error) {
     throw error;
@@ -20,7 +20,7 @@ const deleteRepo = async (gitRepoId) => {
 
 const findRepoById = async (gitRepoId) => {
 try {
-    const result = await gitRepoModel.findOne({ id: gitRepoId });
+    const result = await GitRepoModel.findOne({ gitId: gitRepoId });
     return result;
     } catch (error) {
     throw error;
@@ -29,7 +29,7 @@ try {
 
 const findAllRepos = async () => {
 try {
-    const result = await gitRepoModel.find();
+    const result = await GitRepoModel.find();
     return result;
     } catch (error) {
     throw error;

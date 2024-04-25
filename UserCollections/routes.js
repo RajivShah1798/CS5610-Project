@@ -19,7 +19,7 @@ import {
 
   function searchRepositories(tags, callback) {
     const options = {
-        url: `https://api.github.com/search/repositories?q=${tags}&sort=stars&per_page=15&page=1`,
+        url: `https://api.github.com/search/repositories?q=${tags}&sort=stars&per_page=1&page=1`,
         method: 'GET',
         headers: {
           "Authorization": "Bearer" + process.env.GIT_ACCESS_TOKEN,
@@ -32,7 +32,6 @@ import {
             console.error('Error searching repositories:', error);
             callback(error);
         } else {
-          console.log(body);
             const data = JSON.parse(body);
             callback(null, data.items);
         }
@@ -44,14 +43,25 @@ import {
     try {
       console.log("In API Search");
       const search = req.body;
-      console.log(search.query);
-      searchRepositories(search.query, (err, repositories) => {
+      searchRepositories(search.query, async (err, repositories) => {
         if (err) {
             console.error('Failed to search repositories:', err);
         } else {
-            console.log('Found repositories:');
-            const collections = getCollectionsByType("Public");
-            res.status(201).json({"gitRepos": repositories, "collections": collections});
+            const repos = repositories.map(repo => ({
+              "gitId": repo.id,
+              "name": repo.name,
+              "ownerName": repo.owner.login,
+              "htmlURL": repo.html_url,
+              "description": repo.description,
+              "language": repo.language,
+              "topics": repo.topics,
+              "stargazerCount": repo.stargazers_count,
+              "watcherCount": repo.watchers_count,
+              "forksCount": repo.forks_count,
+              "createdAt": repo.created_at
+          }));
+            const collections = await getCollectionsByType("Public");
+            res.status(201).json({"gitRepos": repos, "collections": collections});
             // repositories.forEach(repo => {
             //     console.log(`${repo.full_name}: ${repo.description}`);
             // });
@@ -90,7 +100,7 @@ import {
     app.post('/repoc/api/collections/:collectionId/github-repos', async (req, res) => {
       const { collectionId } = req.params;
       try {
-        const updatedCollection = await addGithubRepo(collectionId, req.body.repoId);
+        const updatedCollection = await addGithubRepo(collectionId, req.body.repo);
         res.status(200).json(updatedCollection);
       } catch (error) {
         res.status(500).json({ error: error.message });
@@ -184,9 +194,9 @@ import {
       }
     });
   
-    // GET /repoc/api/collections/:type - Get collections by type
-    app.get('/repoc/api/collections/:type', async (req, res) => {
-      const { type } = req.params;
+    // GET /repoc/api/collections - Get collections by type
+    app.get('/repoc/api/collections', async (req, res) => {
+      const { type } = req.body.type;
       try {
         const collections = await getCollectionsByType(type);
         res.status(200).json(collections);

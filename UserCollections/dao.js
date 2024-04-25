@@ -14,6 +14,7 @@
 
 import CollectionModel from './model.js'; // Assuming your models are in a folder called 'models'
 import UserModel from '../Users/model.js';
+import { createRepo } from '../GithubRepos/dao.js';
 import { addCreation } from '../Users/dao.js';
 
 // const createCollection = async (collectionInfo) => {
@@ -59,9 +60,10 @@ const updateCollectionType = async (collectionId, newType) => {
   }
 };
 
-const addGithubRepo = async (collectionId, repoId) => {
+const addGithubRepo = async (collectionId, repo) => {
   try {
-    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { githubRepos: repoId } }, { new: true });
+    const newRepo = await createRepo(repo);
+    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { githubRepos: repo } }, { new: true });
     return collection;
   } catch (error) {
     throw error;
@@ -122,9 +124,10 @@ const getAllCollections = async () => {
   }
 };
 
-const getCollectionsByType = async (collectionType) => {
+const getCollectionsByType = async (type) => {
   try {
-    const collections = await CollectionModel.find({ collectionType });
+    console.log(type);
+    const collections = await CollectionModel.find({ collectionType: type });
     return collections;
   } catch (error) {
     throw error;
