@@ -49,9 +49,10 @@ import {
             console.error('Failed to search repositories:', err);
         } else {
             console.log('Found repositories:');
-            repositories.forEach(repo => {
-                console.log(`${repo.full_name}: ${repo.description}`);
-            });
+            res.status(201).json(repositories);
+            // repositories.forEach(repo => {
+            //     console.log(`${repo.full_name}: ${repo.description}`);
+            // });
         }
     });
     } catch(error) {
