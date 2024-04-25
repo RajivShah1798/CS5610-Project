@@ -39,6 +39,7 @@ import {
     });
   }
 
+  // This API returns search results from the Github API and all available Public Collections.
   app.post('/repoc/api/search', async (req, res) => {
     try {
       console.log("In API Search");
@@ -49,7 +50,8 @@ import {
             console.error('Failed to search repositories:', err);
         } else {
             console.log('Found repositories:');
-            res.status(201).json(repositories);
+            const collections = getCollectionsByType("Public");
+            res.status(201).json({"gitRepos": repositories, "collections": collections});
             // repositories.forEach(repo => {
             //     console.log(`${repo.full_name}: ${repo.description}`);
             // });
