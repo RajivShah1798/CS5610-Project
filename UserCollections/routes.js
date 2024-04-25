@@ -100,7 +100,7 @@ import {
     app.post('/repoc/api/collections/:collectionId/github-repos', async (req, res) => {
       const { collectionId } = req.params;
       try {
-        const updatedCollection = await addGithubRepo(collectionId, req.body.repo);
+        const updatedCollection = await addGithubRepo(collectionId, req.body);
         res.status(200).json(updatedCollection);
       } catch (error) {
         res.status(500).json({ error: error.message });

@@ -57,6 +57,7 @@ export default function UserRoutes(app) {
 
   // GET /repoc/api/users/loggedin - Test to check if Session is being maintained or not
   app.get("/repoc/api/users/loggedin", async (req, res) => {
+    console.log("Signed In User: ", req.session["currentUser"]);
     res.status(200).json(req.session["currentUser"]);
   });
 
