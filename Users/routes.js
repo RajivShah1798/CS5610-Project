@@ -50,14 +50,13 @@ export default function UserRoutes(app) {
       } else {
         res.status(404).json({ message: "User not found" });
       }
-    } catch (error) {
+    } catch (error) {createUser;
       res.status(500).json({ error: error.message });
     }
   });
 
   // GET /repoc/api/users/loggedin - Test to check if Session is being maintained or not
   app.get("/repoc/api/users/loggedin", async (req, res) => {
-    console.log(req.session["currentUser"]);
     res.status(200).json(req.session["currentUser"]);
   });
 

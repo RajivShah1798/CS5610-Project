@@ -42,7 +42,7 @@ app.use(
       domain: process.env.HTTP_SERVER_DOMAIN,
     })
   );
-  
+
 app.use(express.json());
 console.log("Hello World");
 UserRoutes(app);
