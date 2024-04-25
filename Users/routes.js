@@ -54,6 +54,11 @@ export default function UserRoutes(app) {
     }
   });
 
+  // GET /repoc/api/users/loggedin - Test to check if Session is being maintained or not
+  app.get("/repoc/api/users/loggedin", async (req, res) => {
+    res.status(200).json(req.session["currentUser"]);
+  });
+
   // POST /repoc/api/users/logout - Log user out
   app.post("/repoc/api/users/logout", async(req, res) => {
     try {
