@@ -19,7 +19,7 @@ import {
 
   function searchRepositories(tags, callback) {
     const options = {
-        url: `https://api.github.com/search/repositories?q=${tags}&sort=stars&per_page=1&page=1`,
+        url: `https://api.github.com/search/repositories?q=${tags}&sort=stars&per_page=15&page=1`,
         method: 'GET',
         headers: {
           "Authorization": "Bearer" + process.env.GIT_ACCESS_TOKEN,
