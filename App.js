@@ -51,7 +51,7 @@ app.use(session({
   secret: process.env.SECRET_SESSION_KEY,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Set secure to true if you're using HTTPS
+  cookie: { secure: true } // Set secure to true if you're using HTTPS
 }));
 UserRoutes(app);
 CollectionRoutes(app);
