@@ -47,7 +47,8 @@ export default function UserRoutes(app) {
       const user = await findUserByCredentials(username, password);
       if (user) {
         req.session["currentUser"] = user;
-        res.status(200).json(user);
+        res.status(200).json({"data": user,
+        "cookie": req.session});
       } else {
         res.status(404).json({ message: "User not found" });
       }
