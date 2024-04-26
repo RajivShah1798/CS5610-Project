@@ -3,6 +3,7 @@ import {
   findUserByName,
   findUserById,
   findUserByCredentials,
+  updateUserDetails,
   deleteUser,
   findAllUsers,
   addCollaboration,

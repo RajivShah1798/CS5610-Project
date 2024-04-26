@@ -56,7 +56,7 @@ const updateCollection = async (collectionId, newCollection) => {
 
 const deleteCollection = async (collectionId) => {
   try {
-    const collection = await CollectionModel.deleteOne(collectionId);
+    const collection = await CollectionModel.deleteOne({ _id: collectionId});
     return collection;
   } catch (error) {
     throw error;
