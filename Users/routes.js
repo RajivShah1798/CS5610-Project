@@ -289,8 +289,8 @@ export default function UserRoutes(app) {
 
   // GET /repoc/api/users/:userId - Get User Details using Id
   app.get("/repoc/api/users/:userId", async (req, res) => {
-    if(req.session["currentUser"]){
-      const userId = req.params.userId;
+    const userId = req.params.userId;
+    if(req.session["currentUser"]._id === userId){
       try {
         const user = await findUserById(userId);
         res.status(200).json(user);
