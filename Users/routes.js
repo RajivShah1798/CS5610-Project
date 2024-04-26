@@ -58,7 +58,10 @@ export default function UserRoutes(app) {
 
   // GET /repoc/api/users/loggedin - Test to check if Session is being maintained or not
   app.get("/repoc/api/users/loggedin", async (req, res) => {
-    res.status(200).json(req.session["currentUser"]);
+    if (req.session["currentUser"]) {
+      res.status(200).json({message:"User Signed In"});
+    } 
+    res.status(404).json({message:"User not Signed In"})
   });
 
   // POST /repoc/api/users/logout - Log user out
@@ -286,12 +289,16 @@ export default function UserRoutes(app) {
 
   // GET /repoc/api/users/:userId - Get User Details using Id
   app.get("/repoc/api/users/:userId", async (req, res) => {
-    const userId = req.params.userId;
-    try {
-      const user = await findUserById(userId);
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    if(req.session["currentUser"]){
+      const userId = req.params.userId;
+      try {
+        const user = await findUserById(userId);
+        res.status(200).json(user);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    } else {
+      res.status(400).json({message:"User is not Signed In"});
     }
   });
 }

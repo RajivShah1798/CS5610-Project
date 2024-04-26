@@ -1,6 +1,7 @@
 import cors from "cors";
-//import session from "express-session";
-import cookieSession from "cookie-session";
+import session from "express-session";
+import cookieParser from "cookie-parser";
+//import cookieSession from "cookie-session";
 import express from 'express';
 import mongoose from "mongoose";
 import UserRoutes from "./Users/routes.js";
@@ -31,20 +32,27 @@ app.use(cors({
   
 // app.use(session(sessionOptions));
 
-app.use(
-    cookieSession({
-      name: "session",
-      keys: [process.env.SECRET_SESSION_KEY],
-      // Set additional options based on your requirements
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      // Configure cookie options based on your requirements
-      sameSite: "none",
-      secure: true,
-      domain: process.env.HTTP_SERVER_DOMAIN,
-    })
-  );
+// app.use(
+//     cookieSession({
+//       name: "session",
+//       keys: [process.env.SECRET_SESSION_KEY],
+//       // Set additional options based on your requirements
+//       maxAge: 24 * 60 * 60 * 1000, // 24 hours
+//       // Configure cookie options based on your requirements
+//       sameSite: "none",
+//       secure: true,
+//       domain: process.env.HTTP_SERVER_DOMAIN,
+//     })
+//   );
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(session({
+  secret: process.env.SECRET_SESSION_KEY,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set secure to true if you're using HTTPS
+}));
 UserRoutes(app);
 CollectionRoutes(app);
 gitRoutes(app);
