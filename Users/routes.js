@@ -93,6 +93,19 @@ export default function UserRoutes(app) {
     }
   });
 
+  // PUT /repoc/api/users/:userId - Update User Details
+  app.put("/repoc/api/users/:userId", async (req, res) => {
+      const { userId } = req.params;
+      try {
+        delete req.body._id;
+        const user = await updateUserDetails(userId, req.body);
+        res.status(200).json(user);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    }
+  );
+
 
 
   // PUT /repoc/api/users/:userId/collaborate/:collectionId - Add collaboration

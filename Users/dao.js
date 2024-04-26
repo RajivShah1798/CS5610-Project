@@ -189,6 +189,15 @@ const findUserById = async (userId) => {
   }
 };
 
+const updateUserDetails = async (userId, user) => {
+  try {
+    const user = await UserModel.updateOne({_id: userId, user});
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   createUser,
   findUserByCredentials,
@@ -196,6 +205,7 @@ export {
   findUserByName,
   findUserById,
   findAllUsers,
+  updateUserDetails,
   addCollaboration,
   removeCollaboration,
   showCollaboration,

@@ -1,7 +1,8 @@
 import request from 'request';
 import {
     createCollection,
-    updateCollectionType,
+    updateCollection,
+    deleteCollection,
     addGithubRepo,
     removeRepo,
     addCollaborator,
@@ -86,11 +87,23 @@ import {
     });
   
     // PUT /repoc/api/collections/:collectionId/type - Update collection type
-    app.put('/repoc/api/collections/:collectionId/type', async (req, res) => {
+    app.put('/repoc/api/collections/:collectionId', async (req, res) => {
       const { collectionId } = req.params;
       try {
-        const updatedCollection = await updateCollectionType(collectionId, req.body.newType);
+        delete req.body._id;
+        const updatedCollection = await updateCollection(collectionId, req.body);
         res.status(200).json(updatedCollection);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // DELETE /repoc/api/collections/:collectionId - delete a collection 
+    app.delete('/repoc/api/collections/:collectionId', async (req, res) => {
+      const { collectionId } = req.params;
+      try {
+        const collection = await deleteCollection(collectionId);
+        res.status(200).json(collection);
       } catch (error) {
         res.status(500).json({ error: error.message });
       }

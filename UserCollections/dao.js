@@ -52,9 +52,18 @@ const createCollection = async (userId, collectionInfo) => {
   }
 };
 
-const updateCollectionType = async (collectionId, newType) => {
+const updateCollection = async (collectionId, newCollection) => {
   try {
-    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { collectionType: newType }, { new: true });
+    const collection = await CollectionModel.findByIdAndUpdate(collectionId, newCollection);
+    return collection;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteCollection = async (collectionId) => {
+  try {
+    const collection = await CollectionModel.deleteOne(collectionId);
     return collection;
   } catch (error) {
     throw error;
@@ -171,7 +180,8 @@ const getCollectionsByUser = async (userId) => {
 
 export {
   createCollection,
-  updateCollectionType,
+  updateCollection,
+  deleteCollection,
   addGithubRepo,
   removeRepo,
   addCollaborator,
