@@ -204,7 +204,7 @@ import {
     });
   
     // GET /repoc/api/collections - Get collections by type
-    app.get('/repoc/api/collections/:type', async (req, res) => {
+    app.get('/repoc/api/collections/type/:type', async (req, res) => {
       const { type } = req.params;
       try {
         const collections = await getCollectionsByType(type);
