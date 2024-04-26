@@ -191,8 +191,7 @@ const findUserById = async (userId) => {
 
 const updateUserDetails = async (userId, userDetails) => {
   try {
-    delete userDetails._id
-    const user = await UserModel.updateOne({_id: userId, userDetails});
+    const user = await UserModel.findByIdAndUpdate(userId, userDetails);
     return user;
   } catch (error) {
     throw error;
