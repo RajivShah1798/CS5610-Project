@@ -45,7 +45,6 @@ app.use(
   );
 
 app.use(express.json());
-console.log("Hello World");
 UserRoutes(app);
 CollectionRoutes(app);
 gitRoutes(app);

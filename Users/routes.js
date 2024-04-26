@@ -46,7 +46,6 @@ export default function UserRoutes(app) {
       const user = await findUserByCredentials(username, password);
       if (user) {
         req.session["currentUser"] = user;
-        console.log(req.session["currentUser"]);
         res.status(200).json(user);
       } else {
         res.status(404).json({ message: "User not found" });
@@ -58,7 +57,6 @@ export default function UserRoutes(app) {
 
   // GET /repoc/api/users/loggedin - Test to check if Session is being maintained or not
   app.get("/repoc/api/users/loggedin", async (req, res) => {
-    console.log("Signed In User: ", req.session["currentUser"]);
     res.status(200).json(req.session["currentUser"]);
   });
 

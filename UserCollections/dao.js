@@ -15,8 +15,7 @@
 import CollectionModel from './model.js'; // Assuming your models are in a folder called 'models'
 import UserModel from '../Users/model.js';
 import { createRepo, findRepoById } from '../GithubRepos/dao.js';
-import { addCreation } from '../Users/dao.js';
-import GitRepoModel from '../GithubRepos/model.js';
+import { addCreation, addCollaboration, addSaved } from '../Users/dao.js';
 
 // const createCollection = async (collectionInfo) => {
 //   try {
@@ -30,17 +29,11 @@ import GitRepoModel from '../GithubRepos/model.js';
 const createCollection = async (userId, collectionInfo) => {
   try {
     const user = await UserModel.findById(userId);
-    console.log(user);
     if (user.userType !== 'creator' && collectionInfo.collectionType === 'Public') {
       throw new Error("User not authorized to create public collections.");
     }
-
-    console.log(collectionInfo);
     const collection = await CollectionModel.create(collectionInfo);
     // Add the user as the owner of the collection
-    console.log(collection);
-
-    console.log(typeof(user._id));
     collection.owner = user._id;
     collection.ownerName = user.username;
     await collection.save();
@@ -91,8 +84,17 @@ const removeRepo = async (collectionId, repoId) => {
 };
 
 const addCollaborator = async (collectionId, userId) => {
+  // try {
+  //   const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { collaborators: userId } }, { new: true });
+  //   return collection;
+  // } catch (error) {
+  //   throw error;
+  // }
   try {
-    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { collaborators: userId } }, { new: true });
+    const user = await UserModel.findById(userId);
+    const collection = await findByIdAndUpdate(collectionId, { $push: { collaborators: user._id } }, { new: true });
+    // Add the collection to the user's collectionsOwned
+    await addCollaboration(userId, collection._id);
     return collection;
   } catch (error) {
     throw error;
@@ -110,7 +112,10 @@ const removeCollaborator = async (collectionId, userId) => {
 
 const addToSavedBy = async (collectionId, userId) => {
   try {
-    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { savedBy: userId } }, { new: true });
+    const user = await UserModel.findById(userId);
+    const collection = await findByIdAndUpdate(collectionId, { $push: { savedBy: user._id } }, { new: true });
+    // Add the collection to the user's collectionsOwned
+    await addSaved(userId, collection._id);
     return collection;
   } catch (error) {
     throw error;
@@ -137,7 +142,6 @@ const getAllCollections = async () => {
 
 const getCollectionsByType = async (type) => {
   try {
-    console.log(type);
     const collections = await CollectionModel.find({ collectionType: type });
     return collections;
   } catch (error) {
