@@ -131,6 +131,7 @@ import {
     app.post('/repoc/api/collections/:collectionId/collaborators', async (req, res) => {
       const { collectionId } = req.params;
       try {
+        console.log(req.body.userId);
         const updatedCollection = await addCollaborator(collectionId, req.body.userId);
         res.status(200).json(updatedCollection);
       } catch (error) {
@@ -153,6 +154,8 @@ import {
     app.post('/repoc/api/collections/:collectionId/savedBy', async (req, res) => {
       const { collectionId } = req.params;
       try {
+        console.log(collectionId);
+        console.log(req.body.userId);
         const updatedCollection = await addToSavedBy(collectionId, req.body.userId);
         res.status(200).json(updatedCollection);
       } catch (error) {

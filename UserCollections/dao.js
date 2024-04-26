@@ -14,6 +14,7 @@
 
 import CollectionModel from './model.js'; // Assuming your models are in a folder called 'models'
 import UserModel from '../Users/model.js';
+import GitRepoModel from '../GithubRepos/model.js';
 import { createRepo, findRepoById } from '../GithubRepos/dao.js';
 import { addCreation, addCollaboration, addSaved } from '../Users/dao.js';
 
@@ -65,9 +66,13 @@ const deleteCollection = async (collectionId) => {
 
 const addGithubRepo = async (collectionId, repo) => {
   try {
-    const newRepo = await createRepo(repo);
-    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { githubRepos: newRepo._id } }, { new: true });
-    return collection;
+    const gitRepo = await GitRepoModel.findOne({gitId:repo.gitId});
+    console.log(gitRepo);
+    if (!gitRepo) {
+      const newRepo = await createRepo(repo);
+      const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $push: { githubRepos: newRepo._id } }, { new: true });
+      return collection;
+    }
   } catch (error) {
     throw error;
   }
@@ -92,8 +97,10 @@ const addCollaborator = async (collectionId, userId) => {
   // }
   try {
     const user = await UserModel.findById(userId);
-    const collection = await findByIdAndUpdate(collectionId, { $push: { collaborators: user._id } }, { new: true });
+    console.log("Shared User: ", user);
+    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $addToSet: { collaborators: user._id } }, { new: true });
     // Add the collection to the user's collectionsOwned
+    console.log("Shared Collections: ", collection);
     await addCollaboration(userId, collection._id);
     return collection;
   } catch (error) {
@@ -113,7 +120,9 @@ const removeCollaborator = async (collectionId, userId) => {
 const addToSavedBy = async (collectionId, userId) => {
   try {
     const user = await UserModel.findById(userId);
-    const collection = await findByIdAndUpdate(collectionId, { $push: { savedBy: user._id } }, { new: true });
+    console.log("In addToSaved: ", user);
+    const collection = await CollectionModel.findByIdAndUpdate(collectionId, { $addToSet: { savedBy: user._id } }, { new: true });
+    console.log(collection);
     // Add the collection to the user's collectionsOwned
     await addSaved(userId, collection._id);
     return collection;
